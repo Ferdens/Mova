@@ -38,8 +38,7 @@ class ViewController: UIViewController {
 //        pinData2.longitude = 37.065998
 //        pinData2.topText = "TopText2"
 //        pinData2.bottomText = "BottomText2"
-//        dataArray.append(pinData1)
-//        dataArray.append(pinData2)
+
         
 //        let realm = try! Realm()
 //        try! realm.write {
@@ -252,8 +251,6 @@ extension ViewController: MKMapViewDelegate {
         }
         
     }
-    
-    
 }
 
 extension ViewController: UITextFieldDelegate {
