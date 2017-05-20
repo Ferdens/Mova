@@ -149,6 +149,7 @@ class ViewController: UIViewController {
         listButton.addTarget(self, action: #selector(listButtonPressed), for: .touchUpInside)
         searchStackView.addSubview(listButton)
         let searchField = UITextField(frame: CGRect(x: view.frame.width * 0.2, y: searchStackView.frame.height * 0.08, width: view.frame.width * 0.6, height: view.frame.height * 0.04))
+        searchField.delegate = self
         searchField.textAlignment = .center
         searchField.backgroundColor = .white
         searchField.layer.cornerRadius = 4
@@ -253,5 +254,13 @@ extension ViewController: MKMapViewDelegate {
     }
     
     
+}
+
+extension ViewController: UITextFieldDelegate {
+    
+    func textFieldShouldReturn(_ textField: UITextField) -> Bool {
+        view.endEditing(true)
+        return true
+    }
 }
 
