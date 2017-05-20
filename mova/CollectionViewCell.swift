@@ -14,6 +14,7 @@ class CollectionViewCell: UICollectionViewCell {
     
     override init(frame: CGRect) {
         super.init(frame: frame)
+       
         self.contentView.addShadow(opacity: 1, radius: 1)
         label = UILabel(frame: CGRect(x: 3, y: 3, width:  self.contentView.frame.width - 3, height:  self.contentView.frame.height - 3))
         label.frame.origin.y += contentView.frame.height * 0.1

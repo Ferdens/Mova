@@ -19,7 +19,7 @@ class PinInfoView: UIView {
         let rectForInfoView = CGRect(x: -widthForInfoView * 1.1, y: -heightForInfoView/3, width: widthForInfoView, height: heightForInfoView)
         super.init(frame: rectForInfoView)
         self.backgroundColor = UIColor.white
-        let cornerView = UIView(frame: CGRect(x: self.frame.width * 0.87, y: self.frame.height * 0.25, width: self.frame.height * 0.45, height: self.frame.height * 0.45))
+        let cornerView = UIView(frame: CGRect(x: self.frame.width * 0.87, y: self.frame.height * 0.27, width: self.frame.height * 0.45, height: self.frame.height * 0.45))
         cornerView.backgroundColor = UIColor.white
         cornerView.transform = CGAffineTransform(rotationAngle: CGFloat(Double.pi/4))
         cornerView.addShadow(opacity: 0.5, radius: 1)

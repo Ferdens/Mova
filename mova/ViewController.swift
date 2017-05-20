@@ -11,6 +11,8 @@ import MapKit
 import CoreLocation
 import RealmSwift
 
+private let listButtonTitle   = "List"
+private let filterButtonTitle = "Filter"
 class ViewController: UIViewController {
     
     var collectionView      : UICollectionView?
@@ -19,8 +21,7 @@ class ViewController: UIViewController {
     var mapView             : MKMapView?
     
     var testArray = ["Beauty","Household","Auto","Tech","Spa","Sport","Study","Translation"]
-    
-     var dataArray = [PinData]()
+    var dataArray = [PinData]()
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -38,8 +39,8 @@ class ViewController: UIViewController {
 //        pinData2.longitude = 37.065998
 //        pinData2.topText = "TopText2"
 //        pinData2.bottomText = "BottomText2"
-
-        
+//
+//        
 //        let realm = try! Realm()
 //        try! realm.write {
 //            realm.add(pinData1)
@@ -138,12 +139,12 @@ class ViewController: UIViewController {
         let searchStackView = UIView(frame: CGRect(x: 0, y: view.frame.height * 0.12, width: view.frame.width, height:view.frame.height * 0.05))
         view.addSubview(searchStackView)
         let filterButton = UIButton(frame: CGRect(x: 0, y: 0, width: view.frame.width * 0.2, height: view.frame.height * 0.05))
-        filterButton.setTitle("Filter", for: .normal)
+        filterButton.setTitle(filterButtonTitle, for: .normal)
         filterButton.tintColor = .white
         filterButton.addTarget(self, action: #selector(filterButtonPressed), for: .touchUpInside)
         searchStackView.addSubview(filterButton)
         let listButton = UIButton(frame: CGRect(x: view.frame.width * 0.8, y: 0, width: view.frame.width * 0.2, height: view.frame.height * 0.05))
-        listButton.setTitle("List", for: .normal)
+        listButton.setTitle(listButtonTitle, for: .normal)
         listButton.tintColor = .white
         listButton.addTarget(self, action: #selector(listButtonPressed), for: .touchUpInside)
         searchStackView.addSubview(listButton)
@@ -190,11 +191,11 @@ extension ViewController: MKMapViewDelegate {
     func mapView(_ mapView: MKMapView, viewFor annotation: MKAnnotation) -> MKAnnotationView?
     {
         
-        if annotation.isKind(of: MKUserLocation.self) {  //Handle user location annotation..
-            return nil  //Default is to let the system handle it.
+        if annotation.isKind(of: MKUserLocation.self) {
+            return nil
         }
         
-        if !annotation.isKind(of: ImageAnnotation.self) {  //Handle non-ImageAnnotations..
+        if !annotation.isKind(of: ImageAnnotation.self) {
             var pinAnnotationView = mapView.dequeueReusableAnnotationView(withIdentifier: "imageAnnotation")
             if pinAnnotationView == nil {
                 pinAnnotationView = MKPinAnnotationView(annotation: annotation, reuseIdentifier: "imageAnnotation")

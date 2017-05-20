@@ -72,6 +72,16 @@
 			name = Pods;
 			sourceTree = "<group>";
 		};
+		465102801ED0C11F0047631B /* VIews */ = {
+			isa = PBXGroup;
+			children = (
+				4651026C1ECFA01A0047631B /* PinInfoView.swift */,
+				4651026E1ED052B80047631B /* ImageAnnotation.swift */,
+				465102681ECF5A2D0047631B /* CollectionViewCell.swift */,
+			);
+			name = VIews;
+			sourceTree = "<group>";
+		};
 		469769861ECED33500A6F2A3 = {
 			isa = PBXGroup;
 			children = (
@@ -96,11 +106,9 @@
 			children = (
 				469769921ECED33500A6F2A3 /* AppDelegate.swift */,
 				469769A61ECED88D00A6F2A3 /* Extensions.swift */,
-				4651026E1ED052B80047631B /* ImageAnnotation.swift */,
-				469769941ECED33500A6F2A3 /* ViewController.swift */,
 				465102721ED076AD0047631B /* PinData.swift */,
-				465102681ECF5A2D0047631B /* CollectionViewCell.swift */,
-				4651026C1ECFA01A0047631B /* PinInfoView.swift */,
+				469769941ECED33500A6F2A3 /* ViewController.swift */,
+				465102801ED0C11F0047631B /* VIews */,
 				4697699E1ECED33500A6F2A3 /* Info.plist */,
 				469769991ECED33500A6F2A3 /* Assets.xcassets */,
 				4697699B1ECED33500A6F2A3 /* LaunchScreen.storyboard */,

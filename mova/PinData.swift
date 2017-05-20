@@ -16,14 +16,4 @@ class PinData : Object {
     dynamic var longitude  = 0.1
     dynamic var topText    = ""
     dynamic var bottomText = ""
-    
-//    init(coordinate: CLLocationCoordinate2D,topText: String, bottomText: String) {
-//        self.coordinate = coordinate
-//        self.topText    = topText
-//        self.bottomText = bottomText
-//    }
-    
-
- 
-
 }
