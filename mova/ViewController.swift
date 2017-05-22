@@ -17,6 +17,7 @@ class ViewController: UIViewController {
     
     var collectionView      : UICollectionView?
     var viewUnderNavigation : UIView?
+    var searchStackView     : UIView?
     var infoView            : PinInfoView?
     var mapView             : MKMapView?
     var constraintsForActivation = [NSLayoutConstraint]()
@@ -74,7 +75,7 @@ class ViewController: UIViewController {
         
         displayBarButtonItems()
         displaySearchStack()
-        //        displayCollectionView()
+        displayCollectionView()
         
         NSLayoutConstraint.activate(constraintsForActivation)
         
@@ -126,14 +127,14 @@ class ViewController: UIViewController {
         layout.sectionInset = UIEdgeInsets(top: 0, left: 5, bottom: 0, right: 5)
         collectionView =  UICollectionView(frame: CGRect.zero, collectionViewLayout: layout)
         collectionView?.translatesAutoresizingMaskIntoConstraints = false
-        collectionView?.addShadow(opacity: 1, radius: 2)
+        collectionView?.addShadow(opacity: 0.5, radius: 2)
         collectionView?.backgroundColor = .white
         collectionView?.delegate = self
         collectionView?.dataSource = self
         collectionView?.showsHorizontalScrollIndicator = false
         collectionView?.register(CollectionViewCell.self, forCellWithReuseIdentifier: "cell")
         view.addSubview(collectionView!)
-        let topCollectionViewConstraint = collectionView?.topAnchor.constraint(equalTo: (viewUnderNavigation?.bottomAnchor)!)
+        let topCollectionViewConstraint = collectionView?.topAnchor.constraint(equalTo: (searchStackView?.bottomAnchor)!)
         let trailingCollectionViewConstraint =  collectionView?.trailingAnchor.constraint(equalTo: view.trailingAnchor)
         let leadingCollectionViewConstraint = collectionView?.leadingAnchor.constraint(equalTo: view.leadingAnchor)
         let collectionViewHeightConstraints = collectionView?.heightAnchor.constraint(equalTo: view.heightAnchor, multiplier: 0.07)
@@ -163,58 +164,53 @@ class ViewController: UIViewController {
     }
     
     func displaySearchStack() {
-        let searchStackView = UIView()
-        searchStackView.backgroundColor = viewUnderNavigation?.backgroundColor
-        searchStackView.translatesAutoresizingMaskIntoConstraints = false
-        view.addSubview(searchStackView)
-        let topSearchStackViewConstrint = searchStackView.topAnchor.constraint(equalTo: (viewUnderNavigation?.bottomAnchor)!)
-        let leadingSearchStackViewConstrint = searchStackView.leadingAnchor.constraint(equalTo: view.leadingAnchor)
-        let trailingSearchStackViewConstrint = searchStackView.trailingAnchor.constraint(equalTo: view.trailingAnchor)
-        let searchStackViewHeight = searchStackView.heightAnchor.constraint(equalTo: view.heightAnchor, multiplier: 0.05)
-        constraintsForActivation.append(contentsOf: [topSearchStackViewConstrint,leadingSearchStackViewConstrint,trailingSearchStackViewConstrint,searchStackViewHeight])
-        
+        searchStackView = UIView()
+        searchStackView?.backgroundColor = viewUnderNavigation?.backgroundColor
+        searchStackView?.translatesAutoresizingMaskIntoConstraints = false
+        view.addSubview(searchStackView!)
+        let topSearchStackViewConstrint = searchStackView?.topAnchor.constraint(equalTo: (viewUnderNavigation?.bottomAnchor)!)
+        let leadingSearchStackViewConstrint = searchStackView?.leadingAnchor.constraint(equalTo: view.leadingAnchor)
+        let trailingSearchStackViewConstrint = searchStackView?.trailingAnchor.constraint(equalTo: view.trailingAnchor)
+        let searchStackViewHeight = searchStackView?.heightAnchor.constraint(equalTo: view.heightAnchor, multiplier: 0.05)
+        constraintsForActivation.append(contentsOf: [topSearchStackViewConstrint!,leadingSearchStackViewConstrint!,trailingSearchStackViewConstrint!,searchStackViewHeight!])
         
         let filterButton = UIButton()
-        //            UIButton(frame: CGRect(x: 0, y: 0, width: view.frame.width * 0.2, height: view.frame.height * 0.05))
         filterButton.setTitle(filterButtonTitle, for: .normal)
         filterButton.tintColor = .white
         filterButton.addTarget(self, action: #selector(filterButtonPressed), for: .touchUpInside)
         filterButton.translatesAutoresizingMaskIntoConstraints = false
-
-        searchStackView.addSubview(filterButton)
-        let topFilterButtonConstraint = filterButton.topAnchor.constraint(equalTo: searchStackView.topAnchor)
-        let leadingFilterButtonConstrint = filterButton.leadingAnchor.constraint(equalTo: searchStackView.leadingAnchor)
-        let bottomFilterButtonConstraint = filterButton.bottomAnchor.constraint(equalTo: searchStackView.bottomAnchor)
-        let filterButtonWidth            = filterButton.widthAnchor.constraint(equalTo: searchStackView.widthAnchor, multiplier: 0.2)
-        
+        searchStackView?.addSubview(filterButton)
+        let topFilterButtonConstraint = filterButton.topAnchor.constraint(equalTo: (searchStackView?.topAnchor)!)
+        let leadingFilterButtonConstrint = filterButton.leadingAnchor.constraint(equalTo: (searchStackView?.leadingAnchor)!)
+        let bottomFilterButtonConstraint = filterButton.bottomAnchor.constraint(equalTo: (searchStackView?.bottomAnchor)!)
+        let filterButtonWidth            = filterButton.widthAnchor.constraint(equalTo: (searchStackView?.widthAnchor)!, multiplier: 0.2)
         constraintsForActivation.append(contentsOf: [topFilterButtonConstraint,leadingFilterButtonConstrint,bottomFilterButtonConstraint,filterButtonWidth])
-        
         
         let listButton = UIButton()
         listButton.setTitle(listButtonTitle, for: .normal)
         listButton.tintColor = .white
         listButton.addTarget(self, action: #selector(listButtonPressed), for: .touchUpInside)
         listButton.translatesAutoresizingMaskIntoConstraints = false
-        searchStackView.addSubview(listButton)
-        //            UIButton(frame: CGRect(x: view.frame.width * 0.8, y: 0, width: view.frame.width * 0.2, height: view.frame.height * 0.05))
-        let trailingListButtonConstraint = listButton.trailingAnchor.constraint(equalTo: searchStackView.trailingAnchor)
-        let topListButtonConstraint      = listButton.topAnchor.constraint(equalTo: searchStackView.topAnchor)
-        let bottomListButtonConstraint = listButton.bottomAnchor.constraint(equalTo: searchStackView.bottomAnchor)
-        let listButtonWidthConstraint  = listButton.widthAnchor.constraint(equalTo: searchStackView.widthAnchor, multiplier: 0.2)
+        searchStackView?.addSubview(listButton)
+        let trailingListButtonConstraint = listButton.trailingAnchor.constraint(equalTo: (searchStackView?.trailingAnchor)!)
+        let topListButtonConstraint      = listButton.topAnchor.constraint(equalTo: (searchStackView?.topAnchor)!)
+        let bottomListButtonConstraint = listButton.bottomAnchor.constraint(equalTo: (searchStackView?.bottomAnchor)!)
+        let listButtonWidthConstraint  = listButton.widthAnchor.constraint(equalTo: (searchStackView?.widthAnchor)!, multiplier: 0.2)
         constraintsForActivation.append(contentsOf: [trailingListButtonConstraint,topListButtonConstraint,bottomListButtonConstraint,listButtonWidthConstraint])
-       
+        
         let searchField = UITextField()
         searchField.delegate = self
         searchField.textAlignment = .center
         searchField.backgroundColor = .white
         searchField.layer.cornerRadius = 4
-         searchStackView.addSubview(searchField)
+        searchStackView?.addSubview(searchField)
         searchField.translatesAutoresizingMaskIntoConstraints = false
-        let topSearchFieldConstraint = searchField.topAnchor.constraint(equalTo: searchStackView.topAnchor)
-        let heightSearchFieldConstraint = searchField.heightAnchor.constraint(equalTo: searchStackView.heightAnchor, multiplier: 0.8)
+        let topSearchFieldConstraint = searchField.topAnchor.constraint(equalTo: (searchStackView?.topAnchor)!)
+        let heightSearchFieldConstraint = searchField.heightAnchor.constraint(equalTo: (searchStackView?.heightAnchor)!, multiplier: 0.8)
         let leadingSearchFieldConstrint = searchField.leadingAnchor.constraint(equalTo: filterButton.trailingAnchor)
         let trailingSearchFieldConstrint = searchField.trailingAnchor.constraint(equalTo: listButton.leadingAnchor)
         constraintsForActivation.append(contentsOf: [topSearchFieldConstraint,heightSearchFieldConstraint,leadingSearchFieldConstrint,trailingSearchFieldConstrint])
+        
         let searchIcon = UIImageView()
         searchIcon.image = #imageLiteral(resourceName: "search")
         searchIcon.translatesAutoresizingMaskIntoConstraints = false
@@ -224,7 +220,7 @@ class ViewController: UIViewController {
         let leadingSearchIconConstraint = searchIcon.leadingAnchor.constraint(equalTo: searchField.leadingAnchor, constant: 5)
         let searchIconWidth           = searchIcon.widthAnchor.constraint(equalTo: searchField.heightAnchor, multiplier: 0.55)
         constraintsForActivation.append(contentsOf: [topSearchIconConstraint,bottomSearchIconConstraint,leadingSearchIconConstraint,searchIconWidth])
-
+        
     }
     
 }

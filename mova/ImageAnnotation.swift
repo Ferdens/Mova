@@ -31,8 +31,8 @@ class ImageAnnotationView: MKAnnotationView {
     private var imageView: UIImageView!
      override init(annotation: MKAnnotation?, reuseIdentifier: String?) {
         super.init(annotation: annotation, reuseIdentifier: reuseIdentifier)
-        self.frame = CGRect(x: 0, y: 0, width: 20, height: 20)
-        self.imageView = UIImageView(frame: CGRect(x: 0, y: 0, width: 25, height: 35))
+        self.frame = CGRect(x: 0, y: 0, width: 25, height: 35)
+        self.imageView = UIImageView(frame: self.frame )
         self.addSubview(self.imageView)
     }
     override var image: UIImage? {
