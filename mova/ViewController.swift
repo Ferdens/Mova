@@ -19,6 +19,7 @@ class ViewController: UIViewController {
     var viewUnderNavigation : UIView?
     var infoView            : PinInfoView?
     var mapView             : MKMapView?
+    var constraintsForActivation = [NSLayoutConstraint]()
     
     var testArray = ["Beauty","Household","Auto","Tech","Spa","Sport","Study","Translation"]
     var dataArray = [PinData]()
@@ -27,38 +28,55 @@ class ViewController: UIViewController {
         super.viewDidLoad()
         navigationController?.navigationBar.setBackgroundImage(UIImage(), for: UIBarMetrics.default)
         navigationController?.navigationBar.shadowImage = UIImage()
-
-//        let pinData1 = PinData()
-//        pinData1.latitude  = 48.525978
-//        pinData1.longitude = 35.065998
-//        pinData1.topText = "TopText1"
-//        pinData1.bottomText = "BottomText1"
-//        
-//        let pinData2 = PinData()
-//        pinData2.latitude = 48.525978
-//        pinData2.longitude = 37.065998
-//        pinData2.topText = "TopText2"
-//        pinData2.bottomText = "BottomText2"
-//
-//        
-//        let realm = try! Realm()
-//        try! realm.write {
-//            realm.add(pinData1)
-//            realm.add(pinData2)
-//        }
-     
+        
+        //        let pinData1 = PinData()
+        //        pinData1.latitude  = 48.525978
+        //        pinData1.longitude = 35.065998
+        //        pinData1.topText = "TopText1"
+        //        pinData1.bottomText = "BottomText1"
+        //
+        //        let pinData2 = PinData()
+        //        pinData2.latitude = 48.525978
+        //        pinData2.longitude = 37.065998
+        //        pinData2.topText = "TopText2"
+        //        pinData2.bottomText = "BottomText2"
+        //
+        //
+        //        let realm = try! Realm()
+        //        try! realm.write {
+        //            realm.add(pinData1)
+        //            realm.add(pinData2)
+        //        }
+        
         //MAP start
-        mapView = MKMapView(frame: view.frame)
+        mapView = MKMapView()
+        
         mapView?.delegate = self
+        mapView?.translatesAutoresizingMaskIntoConstraints = false
         view.addSubview(mapView!)
+        let topMapConstrint           = mapView?.topAnchor.constraint(equalTo: view.topAnchor)
+        let bottmMapConstrint         = mapView?.bottomAnchor.constraint(equalTo: view.bottomAnchor)
+        let leadingMapConstrint      = mapView?.leadingAnchor.constraint(equalTo: view.leadingAnchor)
+        let trailingMapConstrint     = mapView?.trailingAnchor.constraint(equalTo: view.trailingAnchor)
+        constraintsForActivation.append(contentsOf: [topMapConstrint!,bottmMapConstrint!,leadingMapConstrint!,trailingMapConstrint!])
+ 
         //MAP end
         loadPins()
-        viewUnderNavigation = UIView(frame: CGRect(x: 0 , y: 0, width: view.frame.width, height: view.frame.height * 0.19))
+        viewUnderNavigation = UIView()
+        viewUnderNavigation?.translatesAutoresizingMaskIntoConstraints = false
         viewUnderNavigation?.backgroundColor = .navigationBarBackground
-        view.addSubview(viewUnderNavigation!)
+         view.addSubview(viewUnderNavigation!)
+        let topUnderNavigationViewConstraint = viewUnderNavigation?.topAnchor.constraint(equalTo: view.topAnchor)
+        let ledingUnderNavigationViewConstraint = viewUnderNavigation?.leadingAnchor.constraint(equalTo: view.leadingAnchor)
+        let trailingUnderNavigationViewConstraint = viewUnderNavigation?.trailingAnchor.constraint(equalTo: view.trailingAnchor)
+        let heightUnderNavigationViewConstraint = viewUnderNavigation?.heightAnchor.constraint(equalTo: view.heightAnchor, multiplier: 0.19)
+        constraintsForActivation.append(contentsOf:[topUnderNavigationViewConstraint!,ledingUnderNavigationViewConstraint!,trailingUnderNavigationViewConstraint!,heightUnderNavigationViewConstraint!])
+        
         displayBarButtonItems()
         displaySearchStack()
         displayCollectionView()
+        
+        NSLayoutConstraint.activate(constraintsForActivation)
         
     }
     func loadPins() {
@@ -106,7 +124,8 @@ class ViewController: UIViewController {
         let layout = UICollectionViewFlowLayout()
         layout.scrollDirection = .horizontal
         layout.sectionInset = UIEdgeInsets(top: 0, left: 5, bottom: 0, right: 5)
-        collectionView = UICollectionView(frame: CGRect(x: 0, y: (viewUnderNavigation?.frame.maxY)!, width: view.frame.width, height: view.frame.height * 0.07), collectionViewLayout: layout)
+        collectionView =  UICollectionView(frame: CGRect.zero, collectionViewLayout: layout)
+       collectionView?.translatesAutoresizingMaskIntoConstraints = false
         collectionView?.addShadow(opacity: 1, radius: 2)
         collectionView?.backgroundColor = .white
         collectionView?.delegate = self
@@ -114,6 +133,13 @@ class ViewController: UIViewController {
         collectionView?.showsHorizontalScrollIndicator = false
         collectionView?.register(CollectionViewCell.self, forCellWithReuseIdentifier: "cell")
         view.addSubview(collectionView!)
+        let topCollectionViewConstraint = collectionView?.topAnchor.constraint(equalTo: (viewUnderNavigation?.bottomAnchor)!)
+        let trailingCollectionViewConstraint =  collectionView?.trailingAnchor.constraint(equalTo: view.trailingAnchor)
+        let leadingCollectionViewConstraint = collectionView?.leadingAnchor.constraint(equalTo: view.leadingAnchor)
+        let collectionViewHeightConstraints = collectionView?.heightAnchor.constraint(equalTo: view.heightAnchor, multiplier: 0.07)
+        constraintsForActivation.append(contentsOf: [topCollectionViewConstraint!,trailingCollectionViewConstraint!,leadingCollectionViewConstraint!,collectionViewHeightConstraints!])
+//        CGRect(x: 0, y: (viewUnderNavigation?.frame.maxY)!, width: view.frame.width, height: view.frame.height * 0.07)
+       
     }
     
     func createButtonForNavBarWith( image: UIImage,target: Any,selector: Selector) -> UIButton {
@@ -217,11 +243,11 @@ extension ViewController: MKMapViewDelegate {
     }
     func mapView(_ mapView: MKMapView, didSelect view: MKAnnotationView) {
         let view = view as! ImageAnnotationView
-      
+        
         var data : PinData?
         for pinData in dataArray {
             if (pinData.latitude == view.annotation?.coordinate.latitude) && (pinData.longitude == view.annotation?.coordinate.longitude) {
-               data = pinData
+                data = pinData
             }
         }
         guard data != nil else {return}
@@ -241,14 +267,14 @@ extension ViewController: MKMapViewDelegate {
     func mapView(_ mapView: MKMapView, didDeselect view: MKAnnotationView) {
         let view = view as! ImageAnnotationView
         UIView.animate(withDuration: 0.2, animations: {
-              view.image = #imageLiteral(resourceName: "Pin")
+            view.image = #imageLiteral(resourceName: "Pin")
             self.infoView?.alpha = 0
         }) { (success) in
             if !(self.infoView?.isActive)! {
                 self.infoView?.isActive = false
                 self.infoView?.removeFromSuperview()
             }
-         
+            
         }
         
     }
