@@ -29,29 +29,7 @@ class ViewController: UIViewController {
         super.viewDidLoad()
         navigationController?.navigationBar.setBackgroundImage(UIImage(), for: UIBarMetrics.default)
         navigationController?.navigationBar.shadowImage = UIImage()
-        
-        //        let pinData1 = PinData()
-        //        pinData1.latitude  = 48.525978
-        //        pinData1.longitude = 35.065998
-        //        pinData1.topText = "TopText1"
-        //        pinData1.bottomText = "BottomText1"
-        //
-        //        let pinData2 = PinData()
-        //        pinData2.latitude = 48.525978
-        //        pinData2.longitude = 37.065998
-        //        pinData2.topText = "TopText2"
-        //        pinData2.bottomText = "BottomText2"
-        //
-        //
-        //        let realm = try! Realm()
-        //        try! realm.write {
-        //            realm.add(pinData1)
-        //            realm.add(pinData2)
-        //        }
-        
-        //MAP start
         mapView = MKMapView()
-        
         mapView?.delegate = self
         mapView?.translatesAutoresizingMaskIntoConstraints = false
         view.addSubview(mapView!)
@@ -60,8 +38,7 @@ class ViewController: UIViewController {
         let leadingMapConstrint      = mapView?.leadingAnchor.constraint(equalTo: view.leadingAnchor)
         let trailingMapConstrint     = mapView?.trailingAnchor.constraint(equalTo: view.trailingAnchor)
         constraintsForActivation.append(contentsOf: [topMapConstrint!,bottmMapConstrint!,leadingMapConstrint!,trailingMapConstrint!])
-        
-        //MAP end
+        dataAddIfNeeded()
         loadPins()
         viewUnderNavigation = UIView()
         viewUnderNavigation?.translatesAutoresizingMaskIntoConstraints = false
@@ -72,14 +49,38 @@ class ViewController: UIViewController {
         let trailingUnderNavigationViewConstraint = viewUnderNavigation?.trailingAnchor.constraint(equalTo: view.trailingAnchor)
         let heightUnderNavigationViewConstraint = viewUnderNavigation?.heightAnchor.constraint(equalTo: view.heightAnchor, multiplier: 0.12)
         constraintsForActivation.append(contentsOf:[topUnderNavigationViewConstraint!,ledingUnderNavigationViewConstraint!,trailingUnderNavigationViewConstraint!,heightUnderNavigationViewConstraint!])
-        
         displayBarButtonItems()
         displaySearchStack()
         displayCollectionView()
-        
         NSLayoutConstraint.activate(constraintsForActivation)
         
     }
+    
+    func dataAddIfNeeded() {
+        let pinData1 = PinData()
+        pinData1.id = 1
+        pinData1.latitude  = 48.585978
+        pinData1.longitude = 37.065998
+        pinData1.topText = "TopText1"
+        pinData1.bottomText = "BottomText1"
+        let pinData2 = PinData()
+        pinData2.id  = 2
+        pinData2.latitude = 48.555978
+        pinData2.longitude = 37.165998
+        pinData2.topText = "TopText2"
+        pinData2.bottomText = "BottomText2"
+        let pinsData = [pinData1,pinData2]
+        let realm = try! Realm()
+        for pinData in pinsData {
+            let object = realm.object(ofType: PinData.self, forPrimaryKey: pinData.id)
+            if object == nil {
+                try! realm.write {
+                    realm.add(pinData)
+                }
+            }
+        }
+    }
+
     func loadPins() {
         DispatchQueue(label: "background").async {
             let realm = try! Realm()
@@ -289,7 +290,6 @@ extension ViewController: MKMapViewDelegate {
             }
         }
         guard data != nil else {return}
-        
         infoView = PinInfoView(viewFrame: self.view.frame, annotationViewFrame: view.frame,image: #imageLiteral(resourceName: "test"),topText: (data?.topText)!,bottomText: (data?.bottomText)!)
         
         infoView?.alpha = 0
